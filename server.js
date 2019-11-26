@@ -3,7 +3,11 @@ const connectDB = require("./config/db");
 
 const app = express();
 
+// Connecting to the Database
 connectDB();
+
+//Body Parser Middleware
+app.use(express.json({ extended: false }));
 
 //Define Routes
 app.use("/api/auth", require("./routes/auth"));
