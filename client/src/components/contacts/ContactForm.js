@@ -95,7 +95,7 @@ const ContactForm = () => {
         <div>
           <button
             className='btn btn-light btn-block'
-            onClick={() => clearCurrent()}
+            onClick={() => clearCurrent}
           >
             {" "}
             Clear{" "}
