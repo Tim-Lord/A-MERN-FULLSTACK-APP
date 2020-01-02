@@ -17,7 +17,7 @@ router.post(
     check("name", "Please add a name")
       .not()
       .isEmpty(),
-    check("email", "Please a valid E-mail").isEmail(),
+    check("email", "Please add a valid E-mail").isEmail(),
     check(
       "password",
       "Please add a password with 6 or more characters"
