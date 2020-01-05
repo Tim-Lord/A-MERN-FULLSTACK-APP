@@ -62,14 +62,51 @@ router.post(
 //@route       PUT api/contacts
 //@desc        Update contacts
 //@access      PRIVATE
-router.put("/:id", (req, res) => {
-  res.send("Update Contact");
-});
+router.put(
+  "/:id",
+  [
+    auth,
+    [
+      check("name", "Name is required")
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() });
+    }
+
+    const { name, email, phone, type } = req.body;
+
+    try {
+      const contact = await Contact.findById(req.params.id);
+      contact.name = name;
+      contact.email = email;
+      contact.phone = phone;
+      contact.type = type;
+
+      await contact.save();
+      res.json(contact);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
 
 //@route       DELETE api/contacts
 //@desc        Delete contact
 //@access      PRIVATE
-router.delete("/", (req, res) => {
+router.delete("/:id", async (req, res) => {
+  try {
+    const contact = await Contact.findByIdAndDelete(req.params.id);
+    res.json(contact);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
   res.send("Delete Contact");
 });
 
